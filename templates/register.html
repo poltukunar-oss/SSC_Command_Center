@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login | SSC Command Center</title>
+    <title>Register | SSC Command Center</title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #000428, #004e92);
             color: white;
             display: flex;
             justify-content: center;
@@ -15,16 +15,13 @@
             height: 100vh;
         }
         .box {
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.65);
             padding: 30px;
             border-radius: 12px;
             width: 320px;
-            box-shadow: 0 0 20px #00f2ff;
+            box-shadow: 0 0 20px #00ff9c;
         }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        h2 { text-align: center; margin-bottom: 20px; }
         input {
             width: 100%;
             padding: 10px;
@@ -37,30 +34,25 @@
             padding: 10px;
             border: none;
             border-radius: 6px;
-            background: #00f2ff;
+            background: #00ff9c;
             font-weight: bold;
             cursor: pointer;
         }
-        button:hover {
-            background: #00c2cc;
-        }
-        p {
-            text-align: center;
-            margin-top: 10px;
-        }
-        a { color: #00f2ff; }
+        button:hover { background: #00cc7a; }
+        p { text-align: center; margin-top: 10px; }
+        a { color: #00ff9c; }
     </style>
 </head>
 <body>
 
 <div class="box">
-    <h2>Login</h2>
+    <h2>Register</h2>
     <form method="POST">
         <input type="email" name="email" placeholder="Enter email" required>
-        <input type="password" name="password" placeholder="Enter password" required>
-        <button type="submit">Login</button>
+        <input type="password" name="password" placeholder="Create password" required>
+        <button type="submit">Register</button>
     </form>
-    <p>New user? <a href="/register">Register here</a></p>
+    <p>Already have account? <a href="/">Login</a></p>
 </div>
 
 </body>
