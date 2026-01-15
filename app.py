@@ -86,8 +86,6 @@ def logout():
     session.clear()
     return redirect("/")
 
-# ---------------- DASHBOARD ----------------
-
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
@@ -138,6 +136,11 @@ def add_error():
     conn.close()
 
     return redirect("/dashboard")
+@app.route("/dashboard")
+def dashboard():
+    if "user_id" not in session:
+        return redirect("/")
+    return render_template("index.html")
 
 @app.route("/get_errors")
 def get_errors():
