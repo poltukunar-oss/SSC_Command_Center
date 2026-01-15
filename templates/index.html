@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SSC Command Center 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family: 'Poppins', 'Segoe UI', sans-serif;
+background: radial-gradient(circle at top, #2a0a52 0%, #05010f 55%, #000 100%);
+color:#fff;
+min-height:100vh;
+}
+
+header{
+position:sticky;top:0;z-index:99;
+text-align:center;
+padding:22px;
+font-size:34px;
+font-weight:800;
+letter-spacing:2px;
+background:linear-gradient(135deg,rgba(127,92,255,.25),rgba(0,255,231,.15));
+backdrop-filter:blur(20px);
+box-shadow:0 0 40px rgba(127,92,255,.7);
+}
+
+.container{
+padding:30px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:26px;
+}
+
+.card{
+background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+border-radius:22px;
+padding:22px;
+backdrop-filter:blur(18px);
+box-shadow:
+0 0 25px rgba(127,92,255,.45),
+inset 0 0 20px rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+transition:.3s;
+}
+.card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 0 40px rgba(127,92,255,.8)}
+
+h2{
+margin-top:0;
+color:#bfa8ff;
+letter-spacing:1px;
+}
+
+input,textarea,select{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:10px;
+border:none;
+outline:none;
+background:rgba(0,0,0,.5);
+color:#fff;
+font-size:15px;
+box-shadow:inset 0 0 8px rgba(0,0,0,.8);
+}
+
+button{
+margin-top:10px;
+padding:12px;
+border-radius:14px;
+border:none;
+cursor:pointer;
+font-weight:700;
+letter-spacing:1px;
+color:#000;
+background:linear-gradient(135deg,#7f5cff,#00ffe7);
+box-shadow:0 0 18px rgba(0,255,231,.7);
+transition:.25s;
+}
+button:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,255,231,1)}
+
+#countdown{
+font-size:26px;
+font-weight:700;
+color:#00ffe7;
+text-shadow:0 0 15px #00ffe7;
+}
+
+.error{
+font-size:13px;
+padding:8px;
+border-bottom:1px solid rgba(255,255,255,.1)
+}
+
+#sw{
+font-size:34px;
+font-weight:800;
+letter-spacing:2px;
+text-align:center;
+margin-bottom:10px;
+color:#00ffe7;
+text-shadow:0 0 15px #00ffe7;
+}
+
+footer{
+text-align:center;
+padding:20px;
+font-size:18px;
+color:#ffd700;
+text-shadow:0 0 10px gold;
+opacity:.9;
+}
+</style>
+</head>
+
+<body>
+
+<header>🔥 SSC COMMAND CENTER 2026 🔥</header>
+
+<div class="container">
+
+<div class="card">
+<h2>⏳ COUNTDOWN</h2>
+<div id="countdown"></div>
+</div>
+
+<div class="card">
+<h2>📅 DAILY ROUTINE</h2>
+<ul>
+<li>7–9 AM : GK</li>
+<li>10–1:30 PM : Maths</li>
+<li>2:10–4:10 PM : English</li>
+<li>4:30–5:30 PM : Reasoning</li>
+<li>5:30–6:30 PM : Mock Test</li>
+<li>9:30–11:30 PM : Revision</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>📈 PERFORMANCE TRACKER</h2>
+<canvas id="chart"></canvas>
+</div>
+
+<div class="card">
+<h2>📝 ADD MOCK SCORE</h2>
+<input id="m" placeholder="Maths">
+<input id="e" placeholder="English">
+<input id="r" placeholder="Reasoning">
+<input id="g" placeholder="GS">
+<button onclick="addScore()">SAVE SCORE</button>
+</div>
+
+<div class="card">
+<h2>❌ DIGITAL ERROR BOOK</h2>
+<select id="sub">
+<option>Maths</option><option>English</option><option>Reasoning</option><option>GS</option>
+</select>
+<input id="topic" placeholder="Topic">
+<textarea id="desc" placeholder="Mistake"></textarea>
+<button onclick="addError()">SAVE ERROR</button>
+<div id="errors"></div>
+</div>
+
+<div class="card">
+<h2>⏱ SPEED DRILL STOPWATCH</h2>
+<div id="sw">00:00:00</div>
+<button onclick="start()">START</button>
+<button onclick="stop()">STOP</button>
+<button onclick="reset()">RESET</button>
+</div>
+
+<div class="card">
+<h2>💾 DATA BACKUP</h2>
+<a href="/backup"><button>DOWNLOAD FULL BACKUP</button></a>
+</div>
+
+</div>
+
+<footer>⚔️ “Korbo, Lorbo, Jeetbo Re!” ⚔️</footer>
+
+<script>
+const exam=new Date("2026-09-01").getTime();
+setInterval(()=>{
+let d=exam-new Date().getTime();
+countdown.innerHTML=
+Math.floor(d/86400000)+" Days "+
+Math.floor(d%86400000/3600000)+" H "+
+Math.floor(d%3600000/60000)+" M "+
+Math.floor(d%60000/1000)+" S";
+},1000);
+
+// stopwatch
+let s=0,t=null;
+function start(){if(!t)t=setInterval(()=>{s++;show()},1000)}
+function stop(){clearInterval(t);t=null}
+function reset(){stop();s=0;show()}
+function show(){
+let h=String(Math.floor(s/3600)).padStart(2,'0');
+let m=String(Math.floor(s%3600/60)).padStart(2,'0');
+let se=String(s%60).padStart(2,'0');
+sw.innerText=`${h}:${m}:${se}`
+}
+
+// backend
+async function addScore(){
+await fetch("/add_score",{method:"POST",headers:{'Content-Type':'application/json'},
+body:JSON.stringify({maths:m.value,english:e.value,reasoning:r.value,gs:g.value})});
+loadScores();
+}
+
+async function loadScores(){
+let res=await fetch("/get_scores"); let data=await res.json();
+chart.data.labels=data.map(x=>x[4]);
+chart.data.datasets[0].data=data.map(x=>x[0]);
+chart.data.datasets[1].data=data.map(x=>x[1]);
+chart.data.datasets[2].data=data.map(x=>x[2]);
+chart.data.datasets[3].data=data.map(x=>x[3]);
+chart.update();
+}
+
+async function addError(){
+await fetch("/add_error",{method:"POST",headers:{'Content-Type':'application/json'},
+body:JSON.stringify({subject:sub.value,topic:topic.value,description:desc.value})});
+loadErrors();
+}
+
+async function loadErrors(){
+let res=await fetch("/get_errors"); let data=await res.json();
+errors.innerHTML="";
+data.forEach(e=>{
+errors.innerHTML+=`<div class='error'>[${e[3]}] <b>${e[0]}</b> - ${e[1]}<br>${e[2]}</div>`;
+});
+}
+
+// chart
+let chart=new Chart(document.getElementById("chart"),{
+type:"line",
+data:{labels:[],datasets:[
+{label:"Maths",borderWidth:2},
+{label:"English",borderWidth:2},
+{label:"Reasoning",borderWidth:2},
+{label:"GS",borderWidth:2}
+]}
+});
+
+loadScores(); loadErrors();
+</script>
+
+</body>
+</html>
