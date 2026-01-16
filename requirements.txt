@@ -1,3 +1,6 @@
 flask
 reportlab
 feedparser
+google-generativeai
+python-dotenv
+
