@@ -139,3 +139,19 @@ display:flex;
 justify-content:space-around;
 }
 }
+/* Countdown Styling */
+#countdown { font-size: 1.5rem; font-weight: bold; color: #e11d48; text-align: center; }
+
+/* Heatmap Grid */
+.heatmap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; }
+.topic { padding: 10px; border-radius: 8px; text-align: center; color: white; font-size: 0.8rem; cursor: help; }
+.high { background: #22c55e; } /* Strong - Green */
+.medium { background: #eab308; } /* Revision - Yellow */
+.low { background: #ef4444; } /* Weak - Red */
+
+.legend { margin-top: 10px; font-size: 0.8rem; }
+.dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+/* Flashcard */
+#flashcard-content { background: #f9fafb; padding: 15px; border-radius: 10px; text-align: center; border-left: 5px solid #4f46e5; }
+#fact-text { font-style: italic; margin-bottom: 10px; color: #374151; }

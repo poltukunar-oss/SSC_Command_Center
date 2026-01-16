@@ -37,6 +37,37 @@ button{padding:10px 14px;border:none;border-radius:8px;background:linear-gradien
 <h1>SSC Command Center 2026</h1>
 <div class="quote">“Korbo, Lorbo, Jeetbo Re!”</div>
 </div>
+<!-- EXAM WIDGETS START -->
+
+<div class="card countdown-card">
+    <h3>⏳ Days Left for SSC CHSL 2025</h3>
+    <div id="countdown">Loading...</div>
+</div>
+
+<div class="card heatmap-section">
+    <h3>🔥 Syllabus Heatmap</h3>
+    <div class="heatmap-grid">
+        <div class="topic high" title="Polity: Articles">Polity</div>
+        <div class="topic medium" title="Maths: Algebra">Algebra</div>
+        <div class="topic low" title="Science: Biology">Science</div>
+        <div class="topic high" title="BNS: New Laws">BNS Laws</div>
+    </div>
+    <div class="legend">
+        <span class="dot high"></span> Strong | 
+        <span class="dot medium"></span> Revision | 
+        <span class="dot low"></span> Weak
+    </div>
+</div>
+
+<div class="card flashcard-section">
+    <h3>💡 Daily BNS & Culture Fact</h3>
+    <div id="flashcard-content">
+        <p id="fact-text">Click to see today's fact!</p>
+        <button onclick="getNewFact()">Next Fact</button>
+    </div>
+</div>
+
+<!-- EXAM WIDGETS END -->
 
 <!-- COUNTDOWN -->
 <div class="card">
