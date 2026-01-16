@@ -1,66 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login | SSC Command Center</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .box {
-            background: rgba(0,0,0,0.6);
-            padding: 30px;
-            border-radius: 12px;
-            width: 320px;
-            box-shadow: 0 0 20px #00f2ff;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 6px;
-            border: none;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 6px;
-            background: #00f2ff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #00c2cc;
-        }
-        p {
-            text-align: center;
-            margin-top: 10px;
-        }
-        a { color: #00f2ff; }
-    </style>
+<title>Login | SSC Command Center</title>
+<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-<div class="box">
-    <h2>Login</h2>
-    <form method="POST">
-        <input type="email" name="email" placeholder="Enter email" required>
-        <input type="password" name="password" placeholder="Enter password" required>
-        <button type="submit">Login</button>
-    </form>
-    <p>New user? <a href="/register">Register here</a></p>
+<div class="auth-box">
+<form class="card" method="POST">
+<h2>SSC Command Center</h2>
+<input type="email" name="email" placeholder="Enter email" required>
+<input type="password" name="password" placeholder="Enter password" required>
+<button>Login</button>
+<p>New user? <a href="/register">Register here</a></p>
+</form>
 </div>
 
 </body>

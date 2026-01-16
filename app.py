@@ -17,24 +17,31 @@ def init_db():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS users (
+    cur.execute("""CREATE TABLE IF NOT EXISTS users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE,
         password TEXT
     )""")
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS scores (
+    cur.execute("""CREATE TABLE IF NOT EXISTS scores(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         maths INTEGER, english INTEGER, reasoning INTEGER, gs INTEGER,
         date TEXT
     )""")
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS errors (
+    cur.execute("""CREATE TABLE IF NOT EXISTS errors(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         subject TEXT, topic TEXT, description TEXT,
         image TEXT, date TEXT
+    )""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS routine(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        time TEXT,
+        task TEXT
     )""")
 
     conn.commit()
@@ -42,7 +49,7 @@ def init_db():
 
 # ---------------- AUTH ----------------
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET","POST"])
 def login():
     if "user_id" in session:
         return redirect("/dashboard")
@@ -53,7 +60,7 @@ def login():
 
         conn = sqlite3.connect(DB)
         cur = conn.cursor()
-        cur.execute("SELECT id, password FROM users WHERE email=?", (email,))
+        cur.execute("SELECT id,password FROM users WHERE email=?", (email,))
         user = cur.fetchone()
         conn.close()
 
@@ -63,7 +70,7 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods=["GET","POST"])
 def register():
     if request.method == "POST":
         email = request.form["email"]
@@ -72,12 +79,12 @@ def register():
         try:
             conn = sqlite3.connect(DB)
             cur = conn.cursor()
-            cur.execute("INSERT INTO users (email,password) VALUES (?,?)", (email,password))
+            cur.execute("INSERT INTO users(email,password) VALUES (?,?)", (email,password))
             conn.commit()
             conn.close()
             return redirect("/")
         except:
-            return "Email already registered"
+            return "User already exists"
 
     return render_template("register.html")
 
@@ -85,21 +92,27 @@ def register():
 def logout():
     session.clear()
     return redirect("/")
+
+# ---------------- DASHBOARD ----------------
+
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
         return redirect("/")
     return render_template("index.html")
 
-# ---------------- MOCK SCORE ----------------
+# ---------------- MOCK SCORES ----------------
 
 @app.route("/add_score", methods=["POST"])
 def add_score():
     data = request.json
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("INSERT INTO scores (user_id, maths, english, reasoning, gs, date) VALUES (?,?,?,?,?,?)",
-        (session["user_id"], data["maths"], data["english"], data["reasoning"], data["gs"], datetime.now().strftime("%d-%m-%Y")))
+    cur.execute("""INSERT INTO scores(user_id,maths,english,reasoning,gs,date)
+                   VALUES(?,?,?,?,?,?)""",
+                (session["user_id"], data["maths"], data["english"],
+                 data["reasoning"], data["gs"],
+                 datetime.now().strftime("%d-%m-%Y")))
     conn.commit()
     conn.close()
     return jsonify({"status":"ok"})
@@ -108,29 +121,32 @@ def add_score():
 def get_scores():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("SELECT maths,english,reasoning,gs,date FROM scores WHERE user_id=?", (session["user_id"],))
+    cur.execute("SELECT maths,english,reasoning,gs,date FROM scores WHERE user_id=?",
+                (session["user_id"],))
     rows = cur.fetchall()
     conn.close()
     return jsonify(rows)
 
-# ---------------- ERROR BOOK + IMAGE ----------------
+# ---------------- ERROR BOOK ----------------
 
 @app.route("/add_error", methods=["POST"])
 def add_error():
     subject = request.form["subject"]
     topic = request.form["topic"]
     desc = request.form["description"]
-    file = request.files["image"]
+    file = request.files.get("image")
 
     filename = ""
-    if file:
+    if file and file.filename:
         filename = secure_filename(file.filename)
         file.save(os.path.join(UPLOAD_FOLDER, filename))
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("INSERT INTO errors (user_id,subject,topic,description,image,date) VALUES (?,?,?,?,?,?)",
-        (session["user_id"], subject, topic, desc, filename, datetime.now().strftime("%d-%m-%Y")))
+    cur.execute("""INSERT INTO errors(user_id,subject,topic,description,image,date)
+                   VALUES(?,?,?,?,?,?)""",
+                (session["user_id"], subject, topic, desc,
+                 filename, datetime.now().strftime("%d-%m-%Y")))
     conn.commit()
     conn.close()
 
@@ -140,7 +156,35 @@ def add_error():
 def get_errors():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("SELECT subject,topic,description,image,date FROM errors WHERE user_id=?", (session["user_id"],))
+    cur.execute("SELECT subject,topic,description,image,date FROM errors WHERE user_id=?",
+                (session["user_id"],))
+    rows = cur.fetchall()
+    conn.close()
+    return jsonify(rows)
+
+# ---------------- FLEXIBLE ROUTINE ----------------
+
+@app.route("/save_routine", methods=["POST"])
+def save_routine():
+    data = request.json
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM routine WHERE user_id=?", (session["user_id"],))
+
+    for item in data:
+        cur.execute("INSERT INTO routine(user_id,time,task) VALUES(?,?,?)",
+                    (session["user_id"], item["time"], item["task"]))
+
+    conn.commit()
+    conn.close()
+    return jsonify({"status":"saved"})
+
+@app.route("/get_routine")
+def get_routine():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT time,task FROM routine WHERE user_id=?", (session["user_id"],))
     rows = cur.fetchall()
     conn.close()
     return jsonify(rows)
@@ -157,5 +201,5 @@ def backup():
 
 if __name__ == "__main__":
     init_db()
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT",5000))
     app.run(host="0.0.0.0", port=port)
