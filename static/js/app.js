@@ -78,3 +78,26 @@ function startExamCountdown() {
 
 // Function ko call karo
 startExamCountdown();
+async function loadNews(source, elementId) {
+  try {
+    const res = await fetch(`/api/news/${source}`);
+    const data = await res.json();
+
+    document.getElementById(elementId).innerHTML = data
+      .map(n => `<li>• <a href="${n.link}" target="_blank">${n.title}</a></li>`)
+      .join("");
+  } catch (e) {
+    document.getElementById(elementId).innerHTML = "<li>Unable to load news</li>";
+  }
+}
+
+function loadAllNews(){
+  loadNews("reuters","reuters-news");
+  loadNews("thehindu","hindu-news");
+  loadNews("pib","pib-news");
+}
+
+loadAllNews();
+
+// auto refresh every 30 minutes
+setInterval(loadAllNews, 1800000);
