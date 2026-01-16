@@ -12,7 +12,7 @@
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;}
 .quote{color:#00f7ff;font-style:italic;}
 .section{margin-top:30px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
 .card{background:#0b1025;padding:18px;border-radius:16px;box-shadow:0 0 15px #00f7ff22;}
 .card h3{color:#00f7ff;margin-bottom:10px;}
 input,textarea{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:none;}
@@ -25,141 +25,138 @@ button{padding:10px 14px;border:none;border-radius:8px;background:linear-gradien
 <body>
 
 <div class="dashboard">
-    <div class="card">
-  <h3>📰 Reuters – Live</h3>
-  <ul id="reuters-news"></ul>
-</div>
 
-<div class="card">
-  <h3>📰 The Hindu – National</h3>
-  <ul id="hindu-news"></ul>
-</div>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>SSC Center</h2>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Logout</a>
+  </div>
 
-<div class="card">
-  <h3>🏛 PIB – Government Updates</h3>
-  <ul id="pib-news"></ul>
-</div>
+  <!-- MAIN -->
+  <div class="main">
 
-<div class="sidebar">
-<h2>SSC Center</h2>
-<a href="/dashboard">Dashboard</a>
-<a href="/logout">Logout</a>
-</div>
+    <!-- NEWS COMMAND CENTER -->
+    <section class="news-desktop-grid">
 
-<div class="main">
+      <div class="news-card">
+        <h3>📰 Reuters – Live</h3>
+        <ul id="reuters-news" class="news-list"></ul>
+      </div>
 
-<div class="topbar">
-<h1>SSC Command Center 2026</h1>
-<div class="quote">“Korbo, Lorbo, Jeetbo Re!”</div>
-</div>
-<!-- EXAM WIDGETS START -->
+      <div class="news-card">
+        <h3>📰 The Hindu – National</h3>
+        <ul id="hindu-news" class="news-list"></ul>
+      </div>
 
-<div class="card countdown-card">
-    <h3>⏳ Days Left for SSC CGL 2026</h3>
-    <div id="countdown">Loading...</div>
-</div>
+      <div class="news-card">
+        <h3>🏛 PIB – Government</h3>
+        <ul id="pib-news" class="news-list"></ul>
+      </div>
 
-<div class="card heatmap-section">
-    <h3>🔥 Syllabus Heatmap</h3>
-    <div class="heatmap-grid">
-        <div class="topic high" title="Polity: Articles">Polity</div>
-        <div class="topic medium" title="Maths: Algebra">Algebra</div>
-        <div class="topic low" title="Science: Biology">Science</div>
-        <div class="topic high" title="BNS: New Laws">BNS Laws</div>
+      <div class="news-card daily-ca">
+        <h3>📅 Today’s Current Affairs</h3>
+        <ul id="daily-ca" class="news-list"></ul>
+      </div>
+
+    </section>
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <h1>SSC Command Center 2026</h1>
+      <div class="quote">“Korbo, Lorbo, Jeetbo Re!”</div>
     </div>
-    <div class="legend">
-        <span class="dot high"></span> Strong | 
-        <span class="dot medium"></span> Revision | 
-        <span class="dot low"></span> Weak
+
+    <!-- EXAM WIDGETS -->
+    <div class="section grid">
+
+      <div class="card">
+        <h3>⏳ SSC CGL 2026 Countdown</h3>
+        <div class="timer" id="countdown"></div>
+      </div>
+
+      <div class="card">
+        <h3>🔥 Syllabus Heatmap</h3>
+        <p>Polity | Maths | Reasoning | GS</p>
+      </div>
+
+      <div class="card">
+        <h3>💡 Daily BNS & Culture Fact</h3>
+        <p id="fact-text">Consistency beats intensity.</p>
+      </div>
+
     </div>
-</div>
 
-<div class="card flashcard-section">
-    <h3>💡 Daily BNS & Culture Fact</h3>
-    <div id="flashcard-content">
-        <p id="fact-text">Click to see today's fact!</p>
-        <button onclick="getNewFact()">Next Fact</button>
+    <!-- ROUTINE + STOPWATCH -->
+    <div class="section grid">
+
+      <div class="card">
+        <h3>My Daily Routine</h3>
+        <div id="routineInputs"></div>
+        <button onclick="addRoutineRow()">+ Add Slot</button>
+        <button onclick="saveRoutine()">Save Routine</button>
+        <hr>
+        <div id="routineView"></div>
+      </div>
+
+      <div class="card">
+        <h3>Stopwatch</h3>
+        <div class="stopwatch" id="sw">00:00:00</div>
+        <button onclick="startSW()">Start</button>
+        <button onclick="stopSW()">Stop</button>
+        <button onclick="resetSW()">Reset</button>
+      </div>
+
     </div>
-</div>
 
-<!-- EXAM WIDGETS END -->
+    <!-- MOCK + CHART -->
+    <div class="section grid">
 
-<!-- COUNTDOWN -->
-<div class="card">
-<h3>Exam Countdown (1 Sept 2026)</h3>
-<div class="timer" id="countdown"></div>
-</div><div class="timer-container">
-    <h3>SSC CGL 2026 Countdown</h3>
-    <div id="countdown-timer" style="font-size: 2rem; font-weight: bold; color: #ff4757;">
-        00d 00h 00m 00s
+      <div class="card">
+        <h3>Add Mock Score</h3>
+        <input type="number" id="maths" placeholder="Maths">
+        <input type="number" id="english" placeholder="English">
+        <input type="number" id="reasoning" placeholder="Reasoning">
+        <input type="number" id="gs" placeholder="GS">
+        <button onclick="saveScore()">Save Score</button>
+      </div>
+
+      <div class="card">
+        <h3>Performance Chart</h3>
+        <canvas id="scoreChart"></canvas>
+      </div>
+
     </div>
+
+    <!-- ERROR BOOK -->
+    <div class="section grid">
+
+      <div class="card">
+        <h3>Add Error</h3>
+        <form action="/add_error" method="POST" enctype="multipart/form-data">
+          <input name="subject" placeholder="Subject" required>
+          <input name="topic" placeholder="Topic" required>
+          <textarea name="description" placeholder="Mistake description"></textarea>
+          <input type="file" name="image">
+          <button type="submit">Save Error</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Error Book</h3>
+        <div id="errorList">Loading...</div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
-<!-- ROUTINE + STOPWATCH -->
-<div class="section grid">
-
-<div class="card">
-<h3>My Daily Routine</h3>
-
-<div id="routineInputs"></div>
-
-<button onclick="addRoutineRow()">+ Add Slot</button>
-<button onclick="saveRoutine()">Save Routine</button>
-
-<hr style="margin:12px 0">
-<div id="routineView"></div>
-</div>
-
-<div class="card">
-<h3>Stopwatch</h3>
-<div class="stopwatch" id="sw">00:00:00</div>
-<button onclick="startSW()">Start</button>
-<button onclick="stopSW()">Stop</button>
-<button onclick="resetSW()">Reset</button>
-</div>
-</div>
-
-<!-- MOCK + CHART -->
-<div class="section grid">
-<div class="card">
-<h3>Add Mock Score</h3>
-<input type="number" id="maths" placeholder="Maths">
-<input type="number" id="english" placeholder="English">
-<input type="number" id="reasoning" placeholder="Reasoning">
-<input type="number" id="gs" placeholder="GS">
-<button onclick="saveScore()">Save Score</button>
-</div>
-
-<div class="card">
-<h3>Performance Chart</h3>
-<canvas id="scoreChart"></canvas>
-</div>
-</div>
-
-<!-- ERROR BOOK -->
-<div class="section grid">
-<div class="card">
-<h3>Add Error</h3>
-<form action="/add_error" method="POST" enctype="multipart/form-data">
-<input name="subject" placeholder="Subject" required>
-<input name="topic" placeholder="Topic" required>
-<textarea name="description" placeholder="Mistake description"></textarea>
-<input type="file" name="image">
-<button type="submit">Save Error</button>
-</form>
-</div>
-
-<div class="card">
-<h3>Error Book</h3>
-<div id="errorList">Loading...</div>
-</div>
-</div>
-
-</div>
-</div>
+<!-- CORE SCRIPTS -->
+<script src="/static/js/app.js"></script>
 
 <script>
-// COUNTDOWN
+/* COUNTDOWN */
 const exam=new Date("September 1, 2026").getTime();
 setInterval(()=>{
  let now=new Date().getTime();
@@ -171,14 +168,14 @@ setInterval(()=>{
  <span>${Math.floor((d%60000)/1000)}s</span>`;
 },1000);
 
-// STOPWATCH
+/* STOPWATCH */
 let swInterval,seconds=0;
 function startSW(){if(swInterval)return;swInterval=setInterval(()=>{seconds++;renderSW();},1000);}
 function stopSW(){clearInterval(swInterval);swInterval=null;}
 function resetSW(){stopSW();seconds=0;renderSW();}
 function renderSW(){sw.innerText=new Date(seconds*1000).toISOString().substr(11,8);}
 
-// ROUTINE
+/* ROUTINE */
 function addRoutineRow(t="",task=""){
  let d=document.createElement("div");
  d.innerHTML=`<input value="${t}" placeholder="Time"><input value="${task}" placeholder="Task">`;
@@ -198,13 +195,13 @@ async function saveRoutine(){
 async function loadRoutine(){
  let r=await fetch("/get_routine");
  let data=await r.json();
- routineView.innerHTML=data.map(x=>`<p>⏰ ${x[0]} → ${x[1]}</p>`).join("");
+ routineView.innerHTML=data.map(x=>`<p>⏰ ${x.time} → ${x.task}</p>`).join("");
  routineInputs.innerHTML="";
- data.forEach(x=>addRoutineRow(x[0],x[1]));
+ data.forEach(x=>addRoutineRow(x.time,x.task));
 }
 loadRoutine();
 
-// MOCK + CHART
+/* MOCK + CHART */
 let ctx=document.getElementById("scoreChart").getContext("2d");
 let chart=new Chart(ctx,{type:"line",data:{labels:[],datasets:[
 {label:"Maths",data:[],borderColor:"#00f7ff"},
@@ -219,10 +216,10 @@ async function loadScores(){
  chart.data.datasets.forEach(x=>x.data=[]);
  d.forEach((row,i)=>{
   chart.data.labels.push("T"+(i+1));
-  chart.data.datasets[0].data.push(row[0]);
-  chart.data.datasets[1].data.push(row[1]);
-  chart.data.datasets[2].data.push(row[2]);
-  chart.data.datasets[3].data.push(row[3]);
+  chart.data.datasets[0].data.push(row.maths);
+  chart.data.datasets[1].data.push(row.english);
+  chart.data.datasets[2].data.push(row.reasoning);
+  chart.data.datasets[3].data.push(row.gs);
  });
  chart.update();
 }
@@ -233,15 +230,14 @@ async function saveScore(){
 }
 loadScores();
 
-// ERRORS
+/* ERRORS */
 async function loadErrors(){
  let r=await fetch("/get_errors");
  let d=await r.json();
- errorList.innerHTML=d.map(e=>`<p><b>${e[0]}</b> (${e[1]})<br>${e[2]}<br><small>${e[4]}</small></p><hr>`).join("") || "No errors yet";
+ errorList.innerHTML=d.map(e=>`<p><b>${e.subject}</b> (${e.topic})<br>${e.description}<br><small>${e.date}</small></p><hr>`).join("") || "No errors yet";
 }
 loadErrors();
 </script>
 
 </body>
 </html>
-<script src="/static/js/app.js"></script>
