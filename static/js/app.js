@@ -47,3 +47,34 @@ function getNewFact() {
 
 // Initial call to show a fact
 getNewFact();
+function startExamCountdown() {
+    // Target Date: 1 September 2026
+    const targetDate = new Date("September 1, 2026 00:00:00").getTime();
+
+    const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const difference = targetDate - now;
+
+        // Time calculations
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // UI Update
+        const display = document.getElementById("countdown-timer");
+        
+        if (display) {
+            display.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Agar date aa gayi toh stop kar do
+        if (difference < 0) {
+            clearInterval(timerInterval);
+            if (display) display.innerHTML = "EXAM DAY!";
+        }
+    }, 1000); // Har 1 second (1000ms) mein update hoga
+}
+
+// Function ko call karo
+startExamCountdown();
