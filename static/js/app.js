@@ -23,7 +23,7 @@ Yahin pe baad me add honge:
 - ai analysis
 */
 // 1. Countdown Logic (Set your exam date here)
-const examDate = new Date("November 29, 2025 09:00:00").getTime();
+const examDate = new Date("September 1, 2026 09:00:00").getTime();
 setInterval(() => {
     const now = new Date().getTime();
     const diff = examDate - now;
