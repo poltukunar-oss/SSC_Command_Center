@@ -20,9 +20,10 @@ UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 NEWS_SOURCES = {
-    "reuters": "https://feeds.reuters.com/reuters/INtopNews",
+    "reuters": "https://www.reuters.com/world/rss",
     "thehindu": "https://www.thehindu.com/news/national/feeder/default.rss",
-    "pib": "https://pib.gov.in/rssfeed.aspx"
+    "pib": "https://pib.gov.in/PressReleaseRSS.aspx"
+
 }
 
 # ---------------- DB ----------------
@@ -151,7 +152,10 @@ def get_errors():
 # ---------------- NEWS ----------------
 def fetch_news(source):
     feed = feedparser.parse(NEWS_SOURCES[source])
-    return [{"title":e.title,"link":e.link} for e in feed.entries[:10]]
+
+    if not feed.entries:
+        return [{"title": "No news available right now. Please refresh later."}]
+    return [{"title": e.title, "link": e.link} for e in feed.entries[:15]]
 
 def save_daily_news():
     today=datetime.now().strftime("%d-%m-%Y")
