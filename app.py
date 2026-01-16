@@ -165,7 +165,7 @@ def save_daily_news():
         for s in NEWS_SOURCES:
             for n in fetch_news(s)[:5]:
                 conn.execute("INSERT INTO current_affairs(title,source,link,date) VALUES(?,?,?,?)",
-                             (n["title"],s,n["link"],today))
+                             (n["title"], s, n.get("link", ""), today))
 
 @app.route("/api/news/<source>")
 def api_news(source):
